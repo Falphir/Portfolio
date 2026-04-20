@@ -9,7 +9,7 @@ function App() {
         <div className="relative min-h-screen text-white">
             <Navbar />
             <Background />
-            <BrowserRouter>
+            <BrowserRouter basename="/Portfolio">
                 <div className="relative z-10">
                     <Routes>
                         <Route path="/" element={<Home />} />
