@@ -95,13 +95,13 @@ export default function Projects() {
                                 <img
                                     src={project.imageUrl}
                                     alt={project.title}
-                                    className="w-full h-48 object-cover"
+                                    className="w-full h-48 object-cover rounded-t-xl"
                                 />
                             ) : (
                                 <img
                                     src={defaultImage}
                                     alt="Default project preview"
-                                    className="w-full h-48 object-cover opacity-80"
+                                    className="w-full h-48 object-cover opacity-80 rounded-t-xl"
                                 />
                             )}
 
