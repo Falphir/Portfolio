@@ -44,6 +44,20 @@ export default function Skills() {
                 <div className="flex flex-wrap justify-center gap-8">
 
                     {skills.map((skill) => {
+                        // inside the map where you render each skill
+                        const normalizeIconName = (name: string) => {
+                            return name
+                                .toLowerCase()
+                                .replace(/\s+/g, '')        // remove spaces
+                                .replace(/\+/g, 'plus')    // C++ => cplusplus
+                                .replace(/#/g, 'sharp')
+                                .replace(/\./g, '')        // node.js => nodejs
+                                .replace(/&/g, 'and')      // e.g. "A & B" => aandb (or adjust as needed)
+                                .replace(/[^a-z0-9]/g, ''); // remove any other non-alphanumeric chars
+                        };
+
+                        const iconFile = normalizeIconName(skill.name) + '.svg';
+
                         return (
                             <div
                                 key={skill.name}
@@ -51,9 +65,9 @@ export default function Skills() {
                             >
                                 {/* ICON */}
                                 <img
-                                    src={`${import.meta.env.BASE_URL}icons/${skill.icon}`}
+                                    src={`${import.meta.env.BASE_URL}icons/${iconFile}`}
                                     alt={skill.name}
-                                    className="h-10 w-10 grayscale hover:grayscale-0 hover:scale-110 transition"
+                                    className="h-10 w-10 grayscale hover:grayscale-0 hover:scale-120 transition"
                                 />
                             </div>
                         );
