@@ -1,4 +1,4 @@
-const formatMonthYear = (isoDate) => {
+const formatMonthYear = (isoDate: string) => {
     if (!isoDate) return "";
 
     const date = new Date(isoDate);
@@ -11,14 +11,32 @@ const formatMonthYear = (isoDate) => {
     }).format(date);
 };
 
-const formatRange = (start, end) => {
+const formatRange = (start: string, end?: string): string => {
     const startFormatted = formatMonthYear(start);
     const endFormatted = end ? formatMonthYear(end) : "Present";
 
     return `${startFormatted} - ${endFormatted}`;
 };
 
-export default function Timeline({ items }) {
+type Technology = {
+    name: string;
+    category: "language" | "frontend" | "backend" | "mobile" | "database" | "tool";
+};
+
+type TimelineItem = {
+    title: string;
+    subtitle: string;
+    startDate: string;
+    endDate?: string;
+    description?: string[];
+    technologies?: Technology[];
+};
+
+type Props = {
+    items: TimelineItem[];
+};
+
+export default function Timeline({ items }: Props) {
     return (
         <div className="relative max-w-5xl mx-auto">
 

@@ -14,7 +14,7 @@ type Experience = {
     startDate: string;
     endDate: string;
     isCurrent: boolean;
-    description?: string;
+    description?: string[];
 
     technologies: Technology[];
 };

@@ -5,9 +5,9 @@ export default function ContactForm() {
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState("");
 
-    const sendEmail = async (e) => {
-        e.preventDefault();
-        setLoading(true);
+    const sendEmail = async (e: React.SubmitEvent) => {
+            e.preventDefault();
+            setLoading(true);
 
         try {
             await emailjs.sendForm(
@@ -19,8 +19,14 @@ export default function ContactForm() {
 
             setStatus("Message sent successfully!");
             e.target.reset();
-        } catch (err) {
-            setStatus("Failed to send message." + (err.text || err.message));
+        } catch (err: unknown) {
+            let message = "Unknown error";
+
+            if (err instanceof Error) {
+                message = err.message;
+            }
+
+            setStatus("Failed to send message. " + message);
         } finally {
             setLoading(false);
         }
