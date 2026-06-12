@@ -1,3 +1,6 @@
+import ContactForm from "../layout/ContactForm.tsx";
+
+
 export default function Contact() {
     return (
         <section id="contact" className="py-12 px-6 flex items-center justify-center scroll-mt-24">
@@ -8,12 +11,7 @@ export default function Contact() {
                     Want to work together? Reach out below.
                 </p>
 
-                <a
-                    href="mailto:youremail@example.com"
-                    className="px-6 py-3 rounded-xl bg-white text-black font-medium hover:scale-105 transition inline-block"
-                >
-                    Send Email
-                </a>
+                {ContactForm()}
             </div>
         </section>
     );

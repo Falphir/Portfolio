@@ -30,19 +30,17 @@ export default function Projects() {
   startDate,
   endDate,
   description,
-
   technologies[]->{
     name,
     category
   },
-
   "type": select(
     type == "internship" => "Internship",
     type == "full-time" => "Full-Time",
     type == "part-time" => "Part-Time",
     type == "freelance" => "Freelance",
     type == "contract" => "Contract",
-    "Full-Time" // default value
+    "Full-Time"
   )
 }`;
 
@@ -58,7 +56,7 @@ export default function Projects() {
         endDate: item.endDate,
         title: item.role + " at " + item.company,
         subtitle: item.type,
-        description: item.description ? [item.description] : undefined,
+        description: item.description,
         technologies: item.technologies
     }));
 

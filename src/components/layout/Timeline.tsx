@@ -62,9 +62,16 @@ export default function Timeline({ items }) {
                                         )}
 
                                         {item.description && (
-                                            <ul className="mt-3 text-sm text-gray-400 space-y-1 list-disc list-inside">
+                                            <ul className="mt-3 space-y-2 text-sm text-gray-400">
                                                 {item.description.map((d, i) => (
-                                                    <li key={i}>{d}</li>
+                                                    <li key={i} className="grid grid-cols-[1fr_auto] gap-3 items-center">
+                                                        {/* text */}
+                                                        <span className="leading-relaxed">
+                                                          {d}
+                                                        </span>
+
+                                                        <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" />
+                                                    </li>
                                                 ))}
                                             </ul>
                                         )}
@@ -97,9 +104,19 @@ export default function Timeline({ items }) {
                                         )}
 
                                         {item.description && (
-                                            <ul className="mt-3 text-sm text-gray-400 space-y-1 list-disc list-inside">
+                                            <ul className="mt-3 space-y-2 text-sm text-gray-400">
                                                 {item.description.map((d, i) => (
-                                                    <li key={i}>{d}</li>
+                                                    <li key={i} className="grid grid-cols-[auto_1fr] gap-3 items-center">
+
+                                                        {/* bullet (centered) */}
+                                                        <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0" />
+
+                                                        {/* text */}
+                                                        <span className="leading-relaxed">
+                                                          {d}
+                                                        </span>
+
+                                                    </li>
                                                 ))}
                                             </ul>
                                         )}
