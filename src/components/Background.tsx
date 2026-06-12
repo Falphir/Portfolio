@@ -45,14 +45,14 @@ export default function Background() {
                 className="absolute w-[320px] h-[320px] rounded-full pointer-events-none"
                 style={{
                     background: `
-      radial-gradient(
-        circle at center,
-        rgba(99,102,241,0.35),
-        rgba(59,130,246,0.25),
-        rgba(168,85,247,0.15),
-        transparent 70%
-      )
-    `,
+                        radial-gradient(
+                            circle at center,
+                            rgba(99,102,241,0.35),
+                            rgba(59,130,246,0.25),
+                            rgba(168,85,247,0.15),
+                            transparent 70%
+                        )
+                    `,
                     filter: "blur(40px)",
                     transform: "translate(-50%, -50%)",
                     mixBlendMode: "screen",
