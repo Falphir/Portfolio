@@ -61,7 +61,7 @@ export default function Projects() {
     }));
 
     return (
-        <section id="projects" className="py-12 px-6 scroll-mt-24">
+        <section id="experience" className="py-12 px-6 scroll-mt-24">
             <div className="w-full max-w-7xl mx-auto items-center">
 
                 <h2 className="text-3xl font-bold text-center mb-12">
