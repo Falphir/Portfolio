@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {sanity} from "../../lib/Sanity.ts";
 import Timeline from "../layout/Timeline.tsx";
 
@@ -21,6 +21,18 @@ type Experience = {
 
 export default function Experience() {
     const [experiences, setExperiences] = useState<Experience[]>([]);
+    const [headingVisible, setHeadingVisible] = useState(false);
+    const headingRef = useRef<HTMLHeadingElement | null>(null);
+
+    useEffect(() => {
+        if (!headingRef.current) return;
+        const obs = new IntersectionObserver(
+            ([entry]) => setHeadingVisible(entry.isIntersecting),
+            { threshold: 0.1 }
+        );
+        obs.observe(headingRef.current);
+        return () => obs.disconnect();
+    }, []);
 
     useEffect(() => {
         const fetchExperiences = async () => {
@@ -64,7 +76,10 @@ export default function Experience() {
         <section id="experience" className="py-12 px-6 scroll-mt-24">
             <div className="w-full max-w-7xl mx-auto items-center">
 
-                <h2 className="text-3xl font-bold text-center mb-12">
+                <h2
+                    ref={headingRef}
+                    className={`text-3xl font-bold text-center mb-12 transition-all duration-700 ${headingVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+                >
                     Professional Experience
                 </h2>
 
