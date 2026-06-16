@@ -5,14 +5,23 @@ export default function ContactForm() {
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState("");
 
+<<<<<<< Updated upstream
     const sendEmail = async (e: React.SubmitEvent) => {
             e.preventDefault();
             setLoading(true);
+=======
+    const sendEmail = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const form = e.currentTarget;
+        setLoading(true);
+        setStatus(null);
+>>>>>>> Stashed changes
 
         try {
             await emailjs.sendForm(
                 import.meta.env.VITE_EMAILJS_SERVICE_ID,
                 import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+<<<<<<< Updated upstream
                 e.target,
                 import.meta.env.VITE_EMAILJS_PUBLIC_KEY
             );
@@ -27,6 +36,16 @@ export default function ContactForm() {
             }
 
             setStatus("Failed to send message. " + message);
+=======
+                form,
+                import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+            );
+            setStatus("success");
+            form.reset();
+        } catch (err) {
+            console.error("EmailJS error:", err);
+            setStatus("error");
+>>>>>>> Stashed changes
         } finally {
             setLoading(false);
         }
