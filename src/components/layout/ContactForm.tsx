@@ -1,43 +1,41 @@
 import { useState } from "react";
 import emailjs from "@emailjs/browser";
 
+const inputClass =
+    "w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 " +
+    "focus:outline-none focus:border-indigo-400/60 focus:bg-white/8 transition";
+
 export default function ContactForm() {
     const [loading, setLoading] = useState(false);
-    const [status, setStatus] = useState("");
+    const [status, setStatus] = useState<"success" | "error" | null>(null);
 
-    const sendEmail = async (e: React.SubmitEvent) => {
-            e.preventDefault();
-            setLoading(true);
+    const sendEmail = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setLoading(true);
+        setStatus(null);
 
         try {
             await emailjs.sendForm(
                 import.meta.env.VITE_EMAILJS_SERVICE_ID,
                 import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-                e.target,
+                e.currentTarget,
                 import.meta.env.VITE_EMAILJS_PUBLIC_KEY
             );
-
-            setStatus("Message sent successfully!");
-            e.target.reset();
-        } catch (err: unknown) {
-            let message = "Unknown error";
-
-            if (err instanceof Error) {
-                message = err.message;
-            }
-
-            setStatus("Failed to send message. " + message);
+            setStatus("success");
+            e.currentTarget.reset();
+        } catch {
+            setStatus("error");
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <form onSubmit={sendEmail} className="space-y-4 max-w-md">
+        <form onSubmit={sendEmail} className="space-y-4">
             <input
                 name="name"
                 placeholder="Name"
-                className="w-full p-2 rounded bg-white/5 text-white"
+                className={inputClass}
                 required
             />
 
@@ -45,26 +43,37 @@ export default function ContactForm() {
                 name="email"
                 type="email"
                 placeholder="Email"
-                className="w-full p-2 rounded bg-white/5 text-white"
+                className={inputClass}
                 required
             />
 
             <textarea
                 name="message"
                 placeholder="Message"
-                className="w-full p-2 rounded bg-white/5 text-white"
+                rows={5}
+                className={`${inputClass} resize-none`}
                 required
             />
 
             <button
                 type="submit"
                 disabled={loading}
-                className="bg-indigo-500 px-4 py-2 rounded text-white"
+                className="w-full py-3 rounded-xl bg-indigo-500 text-white font-medium
+                           hover:bg-indigo-400 disabled:opacity-50 disabled:cursor-not-allowed transition"
             >
                 {loading ? "Sending..." : "Send Message"}
             </button>
 
-            {status && <p className="text-sm text-gray-400">{status}</p>}
+            {status === "success" && (
+                <p className="text-sm text-emerald-400 text-center">
+                    Message sent! I'll get back to you soon.
+                </p>
+            )}
+            {status === "error" && (
+                <p className="text-sm text-red-400 text-center">
+                    Something went wrong. Please try again.
+                </p>
+            )}
         </form>
     );
 }

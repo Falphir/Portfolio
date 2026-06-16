@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {sanity} from "../../lib/Sanity.ts";
 import Badge from "../ui/Badge.tsx";
 import RepoDropdown from "../ui/RepoDropdown.tsx";
@@ -29,10 +29,35 @@ type Project = {
     technologies: Technology[];
 };
 
+function ProjectSkeleton() {
+    return (
+        <div className="max-w-sm mx-auto w-full rounded-xl bg-white/5 border border-white/10 flex flex-col animate-pulse">
+            <div className="w-full h-48 bg-white/10 rounded-t-xl" />
+            <div className="p-6 flex flex-col gap-3">
+                <div className="h-5 bg-white/10 rounded w-2/3" />
+                <div className="h-3 bg-white/10 rounded w-full" />
+                <div className="h-3 bg-white/10 rounded w-5/6" />
+                <div className="h-3 bg-white/10 rounded w-4/6" />
+                <div className="flex gap-2 mt-2">
+                    <div className="h-6 bg-white/10 rounded-full w-16" />
+                    <div className="h-6 bg-white/10 rounded-full w-20" />
+                    <div className="h-6 bg-white/10 rounded-full w-14" />
+                </div>
+            </div>
+        </div>
+    );
+}
+
 export default function Projects() {
     const [projects, setProjects] = useState<Project[]>([]);
+    const [loading, setLoading] = useState(true);
     const [selectedRepo, setSelectedRepo] = useState<Record<number, number>>({});
     const [openRepoDropdown, setOpenRepoDropdown] = useState<number | null>(null);
+    const [visibleCards, setVisibleCards] = useState<Set<number>>(new Set());
+
+    const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const headingRef = useRef<HTMLHeadingElement | null>(null);
+    const [headingVisible, setHeadingVisible] = useState(false);
 
     const defaultImage = "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80";
 
@@ -64,27 +89,68 @@ export default function Projects() {
 
             const data = await sanity.fetch(query);
             setProjects(data);
+            setLoading(false);
         };
 
         fetchProjects();
     }, []);
 
+    useEffect(() => {
+        const observers: IntersectionObserver[] = [];
+        const options = { threshold: 0.1 };
+
+        cardRefs.current.forEach((el, i) => {
+            if (!el) return;
+            const obs = new IntersectionObserver(([entry]) => {
+                setVisibleCards((prev) => {
+                    const next = new Set(prev);
+                    if (entry.isIntersecting) next.add(i);
+                    else next.delete(i);
+                    return next;
+                });
+            }, options);
+            obs.observe(el);
+            observers.push(obs);
+        });
+
+        if (headingRef.current) {
+            const obs = new IntersectionObserver(
+                ([entry]) => setHeadingVisible(entry.isIntersecting),
+                options
+            );
+            obs.observe(headingRef.current);
+            observers.push(obs);
+        }
+
+        return () => observers.forEach((o) => o.disconnect());
+    }, [projects]);
+
     return (
         <section id="projects" className="py-12 px-6 scroll-mt-24">
             <div className="w-full max-w-7xl mx-auto items-center">
 
-                <h2 className="text-3xl font-bold text-center mb-12">
+                <h2
+                    ref={headingRef}
+                    className={`text-3xl font-bold text-center mb-12 transition-all duration-700 ${
+                        headingVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                    }`}
+                >
                     Projects
                 </h2>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 items-stretch">
-                    {projects.map((project, i) => (
+                    {loading
+                        ? Array.from({ length: 3 }).map((_, i) => <ProjectSkeleton key={i} />)
+                        : projects.map((project, i) => (
                         <div
                             key={i}
-                            className="max-w-sm mx-auto w-full h-full rounded-xl bg-white/5 border border-white/10 flex flex-col
+                            ref={(el) => { cardRefs.current[i] = el; }}
+                            style={{ transitionDelay: `${(i % 3) * 100}ms` }}
+                            className={`max-w-sm mx-auto w-full h-full rounded-xl bg-white/5 border border-white/10 flex flex-col
                                         hover:bg-white/10 hover:border-indigo-400/40
                                         hover:shadow-[0_0_25px_rgba(99,102,241,0.20),0_0_60px_rgba(59,130,246,0.08)]
-                                        transition-all duration-300 ease-out"
+                                        transition-all duration-500 ease-out
+                                        ${visibleCards.has(i) ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
                         >
                             {/* Image */}
                             {project.imageUrl ? (
@@ -215,6 +281,7 @@ export default function Projects() {
                         </div>
                     ))}
                 </div>
+
             </div>
         </section>
     );
