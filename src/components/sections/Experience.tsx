@@ -19,11 +19,11 @@ type Experience = {
     technologies: Technology[];
 };
 
-export default function Projects() {
+export default function Experience() {
     const [experiences, setExperiences] = useState<Experience[]>([]);
 
     useEffect(() => {
-        const fetchProjects = async () => {
+        const fetchExperiences = async () => {
             const query = `*[_type == "experience"] | order(endDate desc) {
   company,
   role,
@@ -48,7 +48,7 @@ export default function Projects() {
             setExperiences(data);
         };
 
-        fetchProjects();
+        fetchExperiences();
     }, []);
 
     const timelineData = experiences.map((item) => ({

@@ -5,7 +5,7 @@ export default function About() {
                 <h2 className="text-3xl font-bold mb-4">About Me</h2>
 
                 <p className="text-gray-400 leading-relaxed">
-                    I'm a Computer Engineering student passionate about building
+                    I'm a Computer Engineering graduate passionate about building
                     modern web applications, automation systems, and scalable backend
                     architectures. I enjoy working with React, .NET, and exploring new technologies.
                 </p>

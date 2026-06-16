@@ -14,8 +14,10 @@ export default function Background() {
 
         window.addEventListener("mousemove", handleMouseMove);
 
+        let rafId: number;
+
         const animate = () => {
-            const speed = 0.10; // 👈 lower = more delay, higher = faster
+            const speed = 0.10;
 
             pos.current.x += (mouse.current.x - pos.current.x) * speed;
             pos.current.y += (mouse.current.y - pos.current.y) * speed;
@@ -24,13 +26,14 @@ export default function Background() {
                 glowRef.current.style.transform = `translate(${pos.current.x}px, ${pos.current.y}px) translate(-50%, -50%)`;
             }
 
-            requestAnimationFrame(animate);
+            rafId = requestAnimationFrame(animate);
         };
 
-        animate();
+        rafId = requestAnimationFrame(animate);
 
         return () => {
             window.removeEventListener("mousemove", handleMouseMove);
+            cancelAnimationFrame(rafId);
         };
     }, []);
 

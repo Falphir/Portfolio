@@ -5,10 +5,8 @@ export default function Hero() {
     const name = "Tiago";
     const emoji = " 👋";
 
-    const scrollToProjects = () => {
-        document.getElementById("projects")?.scrollIntoView({
-            behavior: "smooth",
-        });
+    const scrollToSection = (id: string) => {
+        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     };
 
     const fullText = prefix + name + emoji;
@@ -57,11 +55,11 @@ export default function Hero() {
 
             {/* Buttons */}
             <div className="flex gap-4">
-                <button onClick={scrollToProjects} className="px-6 py-3 rounded-xl bg-white text-black font-medium hover:scale-105 transition">
+                <button onClick={() => scrollToSection("projects")} className="px-6 py-3 rounded-xl bg-white text-black font-medium hover:scale-105 transition">
                     View Projects
                 </button>
 
-                <button className="px-6 py-3 rounded-xl border border-white/10 bg-white/5 text-white hover:bg-white/10 transition backdrop-blur-md">
+                <button onClick={() => scrollToSection("contact")} className="px-6 py-3 rounded-xl border border-white/10 bg-white/5 text-white hover:bg-white/10 transition backdrop-blur-md">
                     Contact Me
                 </button>
             </div>

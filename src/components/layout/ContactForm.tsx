@@ -11,10 +11,10 @@ export default function ContactForm() {
 
         try {
             await emailjs.sendForm(
-                "service_xcqexxp",
-                "template_2w1xcu1",
+                import.meta.env.VITE_EMAILJS_SERVICE_ID,
+                import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
                 e.target,
-                "USFiVUYUrNS_rd395"
+                import.meta.env.VITE_EMAILJS_PUBLIC_KEY
             );
 
             setStatus("Message sent successfully!");

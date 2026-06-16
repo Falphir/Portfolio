@@ -18,11 +18,11 @@ type Education = {
     technologies: Technology[];
 };
 
-export default function Projects() {
+export default function Education() {
     const [educations, setEducations] = useState<Education[]>([]);
 
     useEffect(() => {
-        const fetchProjects = async () => {
+        const fetchEducations = async () => {
             const query = `*[_type == "education"] | order(endDate desc) {
   institution,
   startDate,
@@ -49,7 +49,7 @@ export default function Projects() {
             setEducations(data);
         };
 
-        fetchProjects();
+        fetchEducations();
     }, []);
 
     const timelineData = educations.map((item) => ({

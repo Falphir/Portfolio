@@ -1,20 +1,21 @@
 import { useEffect, useState } from "react";
 import {sanity} from "../../lib/Sanity.ts";
 
-// const categoryColors = {
-//     frontend: "text-cyan-400",
-//     backend: "text-green-400",
-//     database: "text-yellow-400",
-//     tool: "text-gray-300",
-//     language: "text-purple-400",
-//     mobile: "text-pink-400",
-// };
-
 type Skill = {
     name: string;
     category: string;
     icon: string;
 };
+
+const normalizeIconName = (name: string) =>
+    name
+        .toLowerCase()
+        .replace(/\s+/g, '')
+        .replace(/\+/g, 'plus')
+        .replace(/#/g, 'sharp')
+        .replace(/\./g, '')
+        .replace(/&/g, 'and')
+        .replace(/[^a-z0-9]/g, '');
 
 export default function Skills() {
     const [skills, setSkills] = useState<Skill[]>([]);
@@ -40,22 +41,9 @@ export default function Skills() {
 
                 <h2 className="text-3xl font-bold mb-10">Skills</h2>
 
-                {/* scrolling / flex grid */}
                 <div className="flex flex-wrap justify-center gap-8">
 
                     {skills.map((skill) => {
-                        // inside the map where you render each skill
-                        const normalizeIconName = (name: string) => {
-                            return name
-                                .toLowerCase()
-                                .replace(/\s+/g, '')        // remove spaces
-                                .replace(/\+/g, 'plus')    // C++ => cplusplus
-                                .replace(/#/g, 'sharp')
-                                .replace(/\./g, '')        // node.js => nodejs
-                                .replace(/&/g, 'and')      // e.g. "A & B" => aandb (or adjust as needed)
-                                .replace(/[^a-z0-9]/g, ''); // remove any other non-alphanumeric chars
-                        };
-
                         const iconFile = normalizeIconName(skill.name) + '.svg';
 
                         return (

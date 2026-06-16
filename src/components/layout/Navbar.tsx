@@ -34,10 +34,12 @@ export default function Navbar() {
             {/* Mobile menu */}
             {open && (
                 <div className="md:hidden px-6 pb-4 flex flex-col gap-3 text-gray-300 text-sm">
-                    <a href="#home" className="hover:text-white">Home</a>
-                    <a href="#projects" className="hover:text-white">Projects</a>
-                    <a href="#about" className="hover:text-white">About</a>
-                    <a href="#contact" className="hover:text-white">Contact</a>
+                    <a href="#home" className="hover:text-white" onClick={() => setOpen(false)}>Home</a>
+                    <a href="#projects" className="hover:text-white" onClick={() => setOpen(false)}>Projects</a>
+                    <a href="#experience" className="hover:text-white" onClick={() => setOpen(false)}>Experience</a>
+                    <a href="#education" className="hover:text-white" onClick={() => setOpen(false)}>Education</a>
+                    <a href="#about" className="hover:text-white" onClick={() => setOpen(false)}>About</a>
+                    <a href="#contact" className="hover:text-white" onClick={() => setOpen(false)}>Contact</a>
                 </div>
             )}
         </nav>

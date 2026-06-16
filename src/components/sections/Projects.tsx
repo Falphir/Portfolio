@@ -25,11 +25,7 @@ type Project = {
     architectureType: "single" | "modular" | "multi-repo";
     platforms: string[];
     imageUrl?: string;
-
     repositories: Repository[];
-
-    //demoUrl?: string;
-
     technologies: Technology[];
 };
 
@@ -122,7 +118,7 @@ export default function Projects() {
                                 {/* Technologies */}
                                 <div className="flex flex-wrap gap-2 mb-4">
                                     {project.technologies?.map((t) => (
-                                        <Badge category={t.category}>
+                                        <Badge key={t.name} category={t.category}>
                                             {t.name}
                                         </Badge>
                                     ))}
@@ -130,24 +126,12 @@ export default function Projects() {
 
                                 <div className="mt-auto pt-4 flex gap-3">
 
-                                    {/* Live Demo */}
-                                    {/*{project.demoUrl && (*/}
-                                    {/*    <a*/}
-                                    {/*        href={project.demoUrl}*/}
-                                    {/*        target="_blank"*/}
-                                    {/*        className="px-3 py-1 text-xs rounded-md bg-white text-black hover:opacity-80 transition"*/}
-                                    {/*    >*/}
-                                    {/*        Live Demo*/}
-                                    {/*    </a>*/}
-                                    {/*)}*/}
-
                                     {/* Repositories */}
                                     {project.repositories?.length > 0 && (() => {
                                         const repos = project.repositories;
                                         const selectedIndex = selectedRepo[i] ?? 0;
                                         const selected = repos[selectedIndex];
 
-                                        // 👉 CASE 1: only ONE repo → simple link
                                         if (repos.length === 1) {
                                             return (
                                                 <a
@@ -165,7 +149,6 @@ export default function Projects() {
                                             );
                                         }
 
-                                        // 👉 CASE 2: multiple repos → split button
                                         return (
                                             <div className="relative inline-flex border border-white/20 rounded-md">
 
@@ -215,7 +198,7 @@ export default function Projects() {
                                                     open={openRepoDropdown === i}
                                                     repos={repos}
                                                     selectedIndex={selectedIndex}
-                                                    onSelect={(realIndex: any) => {
+                                                    onSelect={(realIndex: number) => {
                                                         setSelectedRepo((prev) => ({
                                                             ...prev,
                                                             [i]: realIndex,

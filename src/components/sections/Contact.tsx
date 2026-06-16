@@ -11,7 +11,7 @@ export default function Contact() {
                     Want to work together? Reach out below.
                 </p>
 
-                {ContactForm()}
+                <ContactForm />
             </div>
         </section>
     );
