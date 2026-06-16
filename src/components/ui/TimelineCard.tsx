@@ -46,12 +46,12 @@ export default function TimelineCard({ item, align = "left" }: TimelineCardProps
             }`}
         >
             <div className="mb-2 md:mb-3">
-                <span className="text-sm md:text-xl font-semibold text-indigo-300">
+                <span className="text-lg md:text-2xl font-semibold text-indigo-300 whitespace-nowrap">
                     {formatRange(item.startDate, item.endDate)}
                 </span>
             </div>
 
-            <h3 className="text-white font-semibold text-base md:text-lg break-words">
+            <h3 className="text-white font-semibold text-lg">
                 {item.title}
             </h3>
 
