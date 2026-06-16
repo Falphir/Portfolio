@@ -10,3 +10,23 @@
   background-size: 200% 200%;
   animation: gradientMove 2s ease infinite;
 }
+
+@keyframes blob1 {
+  0%, 100% { transform: translate(0px,    0px)   scale(1);    }
+  25%       { transform: translate(100px, -120px) scale(1.15); }
+  50%       { transform: translate(60px,   80px)  scale(0.9);  }
+  75%       { transform: translate(-80px, -60px)  scale(1.05); }
+}
+
+@keyframes blob2 {
+  0%, 100% { transform: translate(0px,    0px)    scale(1);    }
+  25%       { transform: translate(-120px, 80px)  scale(1.1);  }
+  50%       { transform: translate(80px,  -100px) scale(0.92); }
+  75%       { transform: translate(-40px,  60px)  scale(1.08); }
+}
+
+@keyframes blob3 {
+  0%, 100% { transform: translate(-50%, -50%) scale(1);    }
+  33%       { transform: translate(calc(-50% + 120px), calc(-50% - 80px)) scale(1.12); }
+  66%       { transform: translate(calc(-50% - 90px),  calc(-50% + 100px)) scale(0.9); }
+}
