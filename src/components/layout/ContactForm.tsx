@@ -11,6 +11,7 @@ export default function ContactForm() {
 
     const sendEmail = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const form = e.currentTarget;
         setLoading(true);
         setStatus(null);
 
@@ -22,8 +23,9 @@ export default function ContactForm() {
                 import.meta.env.VITE_EMAILJS_PUBLIC_KEY
             );
             setStatus("success");
-            e.currentTarget.reset();
-        } catch {
+            form.reset();
+        } catch (err) {
+            console.error("EmailJS error:", err);
             setStatus("error");
         } finally {
             setLoading(false);
