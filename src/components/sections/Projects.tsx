@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {sanity} from "../../lib/Sanity.ts";
 import Badge from "../ui/Badge.tsx";
 import RepoDropdown from "../ui/RepoDropdown.tsx";
@@ -55,6 +56,7 @@ export default function Projects() {
     const [openRepoDropdown, setOpenRepoDropdown] = useState<number | null>(null);
     const [visibleCards, setVisibleCards] = useState<Set<number>>(new Set());
 
+    const navigate = useNavigate();
     const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
     const headingRef = useRef<HTMLHeadingElement | null>(null);
     const [headingVisible, setHeadingVisible] = useState(false);
@@ -146,10 +148,11 @@ export default function Projects() {
                             key={i}
                             ref={(el) => { cardRefs.current[i] = el; }}
                             style={{ transitionDelay: `${(i % 3) * 100}ms` }}
+                            onClick={() => navigate(`/projects/${project.slug.current}`)}
                             className={`max-w-sm mx-auto w-full h-full rounded-xl bg-white/5 border border-white/10 flex flex-col
                                         hover:bg-white/10 hover:border-indigo-400/40
                                         hover:shadow-[0_0_25px_rgba(99,102,241,0.20),0_0_60px_rgba(59,130,246,0.08)]
-                                        transition-all duration-500 ease-out
+                                        transition-all duration-500 ease-out cursor-pointer
                                         ${visibleCards.has(i) ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
                         >
                             {/* Image */}

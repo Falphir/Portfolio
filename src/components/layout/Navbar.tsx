@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const SECTIONS = ["home", "projects", "experience", "education", "contact"] as const;
 const LABELS: Record<string, string> = {
@@ -12,6 +13,12 @@ const LABELS: Record<string, string> = {
 export default function Navbar() {
     const [open, setOpen] = useState(false);
     const [active, setActive] = useState("home");
+    const { pathname } = useLocation();
+    const navigate = useNavigate();
+
+    const navLinksRef = useRef<HTMLDivElement>(null);
+    const linkRefs = useRef<Map<string, HTMLAnchorElement>>(new Map());
+    const [dotX, setDotX] = useState<number | null>(null);
 
     useEffect(() => {
         const observers: IntersectionObserver[] = [];
@@ -28,36 +35,70 @@ export default function Navbar() {
         });
 
         return () => observers.forEach((o) => o.disconnect());
-    }, []);
+    }, [pathname]);
 
-    const linkClass = (id: string) =>
-        `hover:text-white transition ${active === id ? "text-white" : "text-gray-400"}`;
+    const displayActive = pathname === "/" ? active : "";
 
-    const activeDot = (id: string) =>
-        active === id
-            ? "after:content-[''] after:absolute after:-bottom-1 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:rounded-full after:bg-indigo-400"
-            : "";
+    // Measure the center-X of the active link relative to the container
+    useEffect(() => {
+        const linkEl = displayActive ? linkRefs.current.get(displayActive) : null;
+        const containerEl = navLinksRef.current;
+        if (!linkEl || !containerEl) return;
+
+        const containerRect = containerEl.getBoundingClientRect();
+        const linkRect = linkEl.getBoundingClientRect();
+        setDotX(linkRect.left - containerRect.left + linkRect.width / 2);
+    }, [displayActive]);
+
+    const handleNavClick = (e: React.MouseEvent, id: string) => {
+        if (pathname !== "/") {
+            e.preventDefault();
+            navigate({ pathname: "/", hash: `#${id}` });
+        }
+    };
+
+    const navLinkClass = (id: string) =>
+        `hover:text-white transition-colors duration-300 ${
+            displayActive === id ? "text-white" : "text-gray-400"
+        }`;
 
     return (
         <nav className="fixed top-0 left-0 w-full z-50 bg-black/30 backdrop-blur-md border-b border-white/10">
             <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
                 {/* Logo */}
-                <div className="text-white font-bold text-lg">
+                <Link to="/" className="text-white font-bold text-lg">
                     Tiago<span className="text-indigo-400">.dev</span>
-                </div>
+                </Link>
 
                 {/* Desktop links */}
-                <div className="hidden md:flex items-center gap-6 text-sm">
+                <div ref={navLinksRef} className="hidden md:flex items-center gap-6 text-sm relative">
                     {SECTIONS.map((id) => (
                         <a
                             key={id}
+                            ref={(el) => {
+                                if (el) linkRefs.current.set(id, el);
+                                else linkRefs.current.delete(id);
+                            }}
                             href={`#${id}`}
-                            className={`relative ${linkClass(id)} ${activeDot(id)}`}
+                            onClick={(e) => handleNavClick(e, id)}
+                            className={navLinkClass(id)}
                         >
                             {LABELS[id]}
                         </a>
                     ))}
+
+                    {/* Sliding dot */}
+                    <span
+                        className="absolute -bottom-[17px] left-0 w-1 h-1 rounded-full bg-indigo-400 pointer-events-none"
+                        style={{
+                            transform: `translateX(calc(${dotX ?? 0}px - 50%))`,
+                            opacity: dotX !== null && displayActive ? 1 : 0,
+                            transition: dotX !== null
+                                ? "transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease"
+                                : "none",
+                        }}
+                    />
                 </div>
 
                 {/* Mobile button */}
@@ -77,8 +118,8 @@ export default function Navbar() {
                         <a
                             key={id}
                             href={`#${id}`}
-                            className={linkClass(id)}
-                            onClick={() => setOpen(false)}
+                            onClick={(e) => { handleNavClick(e, id); setOpen(false); }}
+                            className={navLinkClass(id)}
                         >
                             {LABELS[id]}
                         </a>
