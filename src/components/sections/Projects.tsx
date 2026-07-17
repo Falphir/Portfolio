@@ -25,6 +25,8 @@ type Project = {
     architectureType: "single" | "modular" | "multi-repo";
     platforms: string[];
     imageUrl?: string;
+    demoUrl?: string;
+    apiDocsUrl?: string;
     repositories: Repository[];
     technologies: Technology[];
 };
@@ -80,7 +82,8 @@ export default function Projects() {
                         },
                     
                         demoUrl,
-                    
+                        apiDocsUrl,
+
                         technologies[]->{
                             name,
                             category
@@ -166,6 +169,28 @@ export default function Projects() {
                                     alt="Default project preview"
                                     className="w-full h-48 object-cover opacity-80 rounded-t-xl"
                                 />
+                            )}
+
+                            {/* Live demo badge */}
+                            {project.demoUrl && (
+                                <a
+                                    href={project.demoUrl}
+                                    target="_blank"
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="absolute top-3 right-3 z-10 flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-full
+                                               bg-indigo-500/90 text-white shadow-lg backdrop-blur-sm
+                                               hover:bg-indigo-500 transition"
+                                >
+                                    <span className="relative flex h-2 w-2">
+                                        <span className="absolute inline-flex h-full w-full rounded-full bg-white/70 animate-ping" />
+                                        <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
+                                    </span>
+                                    Live Demo
+                                    <FontAwesomeIcon
+                                        icon={faArrowUpRightFromSquare}
+                                        className="text-[0.65rem] ml-0.5 opacity-80"
+                                    />
+                                </a>
                             )}
 
                             <div className="p-6 flex flex-col flex-1">
@@ -276,6 +301,22 @@ export default function Projects() {
                                             </div>
                                         );
                                     })()}
+
+                                    {/* API docs */}
+                                    {project.apiDocsUrl && (
+                                        <a
+                                            href={project.apiDocsUrl}
+                                            target="_blank"
+                                            onClick={(e) => e.stopPropagation()}
+                                            className="ml-auto px-3 py-1 text-xs rounded-md border border-white/20 text-gray-300 hover:bg-white/10 transition flex items-center"
+                                        >
+                                            API Docs
+                                            <FontAwesomeIcon
+                                                icon={faArrowUpRightFromSquare}
+                                                className="text-xs ml-2 opacity-60 group-hover:opacity-100 transition"
+                                            />
+                                        </a>
+                                    )}
                                 </div>
 
                             </div>
